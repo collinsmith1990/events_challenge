@@ -2,4 +2,3 @@
 
 Run "rake import" to populate the database from the csv located in the db
 directory.
-<tt>rake doc:app</tt>.
