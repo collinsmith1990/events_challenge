@@ -11,8 +11,9 @@ task :import => [:environment] do
         track = Track.create(name: row[3])
       end
       Event.create(start: row[0], finish: row[1], name: row[2], track_id: track.id)
+    else
+      Event.create(start: row[0], finish: row[1], name: row[2])
     end
-    Event.create(start: row[0], finish: row[1], name: row[2])
   end
 
 end
