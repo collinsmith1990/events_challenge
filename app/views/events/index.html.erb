@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <table class="table table-bordered">
+      <thead>
+        <th>Time</th>
+        <% @tracks.each do |track| %>
+          <th><%= track.name %></th>
+        <% end %>
+      </thead>
+      <%= create_table_rows(@events) %>
+    </table>
+  </div>
+</div>
+
+<!--        <% @events.each do |event| %>
+          <tr>
+            <% if event.track %>
+              <td class="info"><%= event.name %></td>
+            <% else %>
+              <td class="warning"colspan="4"><%= event.name %></td>
+            <% end %>
+          </tr>
+        <% end %> 
+!-->
