@@ -1,28 +1,44 @@
 module EventsHelper
 
-  def create_table_rows(events)
+  def create_table_rows(events, tracks)
     time = events.minimum(:start)
     finish = events.maximum(:finish)
     html = String.new
     
     while(time < finish) do
       if time.min == 0
-        html += "<tr rowspan='4'>"
-        html += "<td>#{time}</td>"
-        events_at_time(events, time).each do |event|
-          html += "<td>#{event ? event.name : ""}</td>"
-        end
+        html += "<tr>"
+        html += "<td rowspan='4'>#{time}</td>"
+        html += create_events_row(events_at_time(events, time), tracks.count)
         html += "</tr>"
       else
         html += "<tr>"
-        events_at_time(events, time).each do |event|
-          html += "<td>#{event ? event.name : ""}</td>"
-        end
+        html += create_events_row(events_at_time(events, time), tracks.count)
         html += "</tr>"
       end
         time = time + 15.minutes
     end
     html.html_safe
+  end
+
+  def create_events_row(events, col_count)
+    html = ""
+    cells = Array.new(col_count)
+    events.each do |event|
+      if event.try(:track)
+        cells[event.track.column_index] = "<td class='info'>#{event.name}</td>"
+      else
+        return html += "<td class='warning' colspan='5'>#{event.name}</td>"
+      end
+    end
+    cells.each do |cell|
+      if cell
+        html += cell
+      else
+        html += "<td></td>"
+      end
+    end
+    html
   end
 
   def events_at_time(events, time)
